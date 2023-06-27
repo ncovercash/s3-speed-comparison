@@ -46,9 +46,9 @@ const outputTableConfig = {
     bottomJoin: '',
     bottomLeft: '',
     bottomRight: '',
-    bodyLeft: '|`',
-    bodyRight: '`|',
-    bodyJoin: '`|`',
+    bodyLeft: '|',
+    bodyRight: '|',
+    bodyJoin: '|',
     joinBody: '-',
     joinLeft: '|',
     joinRight: '|',
@@ -122,6 +122,8 @@ async function processBasicStats() {
   await writeFile(
     resolve(dir, 'basic-stats.md'),
     table(data, outputTableConfig)
+      .replaceAll('--|', '--:|')
+      .replace('--:|', '--|')
   );
 }
 
@@ -385,7 +387,9 @@ async function fullUploadStats() {
 
   await writeFile(
     resolve(dir, 'upload-stats.md'),
-    table(tableValues, outputTableConfig) +
+    table(tableValues, outputTableConfig)
+      .replaceAll('--|', '--:|')
+      .replace('--:|', '--|') +
       '\n\n' +
       '*Times are in milliseconds, lower is better.*' +
       '\n\n' +
@@ -667,7 +671,10 @@ async function processDetailedMultipartStats() {
         { alignment: 'left' },
         ...Array(11).fill({ alignment: 'right' }),
       ],
-    }) +
+    })
+      .replaceAll('--|', '--:|')
+      .replace('--:|', '--|')
+      .replace('--:|', '--|') +
       '\n\n' +
       '*Times are in milliseconds, lower is better.*' +
       '\n\n' +
