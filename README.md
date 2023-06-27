@@ -20,4 +20,8 @@ ACCESS_KEY=ABCDEF SECRET_KEY=123456 ENDPOINT=http://localhost:9000 yarn benchmar
 
 If these are not specified, the script will default to `http://localhost:9000` with credentials `minioadmin`:`minioadmin`
 
-\*\*Note: this will probably take at least 15 GB of storage on your device/S3 instance.
+Once you've run this, `results.json` will have been created. To visualize the data, run:
+
+```sh
+yarn chart results.json
+```
