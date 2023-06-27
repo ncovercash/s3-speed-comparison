@@ -10,10 +10,9 @@ import {
   UploadPartCommand,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import benny from 'benny';
 import crypto from 'crypto';
-import ky from 'ky-universal';
 import { writeFile } from 'fs';
+import ky from 'ky-universal';
 import { promisify } from 'util';
 
 const s3 = new S3Client({
@@ -293,50 +292,50 @@ async function run() {
 
   await s3.send(new CreateBucketCommand({ Bucket }));
 
-  // await measure(
-  //   'get-traditional-presigned-url',
-  //   { fn: () => getTraditionalPresignedUrl('traditional-presigned-url-only') },
-  //   1000
-  // );
-  // await measure(
-  //   'initiate-multipart-only',
-  //   { fn: () => initiateMultipart('initiate-multipart-only') },
-  //   1000
-  // );
-  // await measure(
-  //   'get-multipart-presigned-url-only',
-  //   {
-  //     setup: async () => {
-  //       const { Key, UploadId } = await initiateMultipart(
-  //         'multipart-presigned-url-only'
-  //       );
-  //       if (!Key || !UploadId) {
-  //         throw new Error('Key or UploadId is undefined');
-  //       }
-  //       return { Key, UploadId };
-  //     },
-  //     fn: ({ Key, UploadId }) => getMultipartPresignedUrl(Key, UploadId, 1),
-  //   },
-  //   1000
-  // );
-  // await measureTraditionalUploadCases([
-  //   '512k',
-  //   '5m',
-  //   '10m',
-  //   '25m',
-  //   '50m',
-  //   '100m',
-  //   '1g',
-  //   '1.5g',
-  //   // got OS/syscall errors attempting 2g :(
-  // ]);
-  // await measureMultipartUploadCases(
-  //   ['512k', '5m', '10m', '25m', '50m', '100m'],
-  //   ['5m', '25m', '50m', '100m']
-  // );
+  await measure(
+    'get-traditional-presigned-url',
+    { fn: () => getTraditionalPresignedUrl('traditional-presigned-url-only') },
+    1000
+  );
+  await measure(
+    'initiate-multipart-only',
+    { fn: () => initiateMultipart('initiate-multipart-only') },
+    1000
+  );
+  await measure(
+    'get-multipart-presigned-url-only',
+    {
+      setup: async () => {
+        const { Key, UploadId } = await initiateMultipart(
+          'multipart-presigned-url-only'
+        );
+        if (!Key || !UploadId) {
+          throw new Error('Key or UploadId is undefined');
+        }
+        return { Key, UploadId };
+      },
+      fn: ({ Key, UploadId }) => getMultipartPresignedUrl(Key, UploadId, 1),
+    },
+    1000
+  );
+  await measureTraditionalUploadCases([
+    '512k',
+    '5m',
+    '10m',
+    '25m',
+    '50m',
+    '100m',
+    '1g',
+    '1.5g',
+    // got OS/syscall errors attempting 2g :(
+  ]);
+  await measureMultipartUploadCases(
+    ['512k', '5m', '10m', '25m', '50m', '100m'],
+    ['5m', '25m', '50m', '100m']
+  );
   await measureMultipartUploadCases(
     ['1g', '2g', '5g'],
-    [/* '5m', '25m', '50m', '100m',  */ '200m', '500m']
+    ['5m', '25m', '50m', '100m', '200m', '500m']
   );
 
   console.log('Deleting temporary S3 files...');
