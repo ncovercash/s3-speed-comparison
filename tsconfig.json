@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "lib": ["esnext", "dom"],
+    "module": "es2020",
+    "moduleResolution": "node",
+    "strict": true,
+    "resolveJsonModule": true
+  },
+  "ts-node": {
+    "esm": true
+  }
+}
