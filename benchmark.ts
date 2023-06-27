@@ -222,7 +222,7 @@ async function measureMultipartUploadCases(sizes: string[], chunks: string[]) {
   for (const size of sizes) {
     for (const chunk of chunks) {
       await measure(
-        `upload-multipart-${size}-${chunk}`,
+        `upload-multipart-total-${size}-${chunk}`,
         {
           setup: () => {
             const chunkData = getFileOfSize(sizeToBytes(chunk));

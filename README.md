@@ -25,3 +25,5 @@ Once you've run this, `results.json` will have been created. To visualize the da
 ```sh
 yarn chart results.json
 ```
+
+This will print lots of data as well as generate a folder `results/` with a bunch of charts and tables.
